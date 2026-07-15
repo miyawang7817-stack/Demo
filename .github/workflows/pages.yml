@@ -1,0 +1,49 @@
+name: Deploy showcase to Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Assemble static site
+        run: |
+          mkdir -p _site/showcase
+          cp public/showcase/*.html _site/showcase/
+          cat > _site/index.html <<'HTML'
+          <!doctype html><html lang="zh"><head><meta charset="utf-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>MotionHub — 实时效果</title>
+          <style>body{font-family:system-ui,"PingFang SC",sans-serif;background:#0a0a0f;color:#e8e8f0;margin:0;padding:56px 24px;max-width:760px;margin-inline:auto}
+          h1{font-size:28px;letter-spacing:-.02em}p{color:#9a9ab0}
+          a.card{display:block;margin:14px 0;padding:20px 22px;border:1px solid #26263a;border-radius:16px;background:#14141c;text-decoration:none;color:#fff;transition:.2s}
+          a.card:hover{border-color:#7c5cff;transform:translateY(-2px)}
+          a.card b{font-size:18px}a.card span{display:block;color:#9a9ab0;font-size:14px;margin-top:4px}</style></head>
+          <body><h1>🎞️ MotionHub — 实时效果</h1>
+          <p>点开即为带真实视频/图片/字体的完整效果（在你的浏览器里加载第三方 CDN）。</p>
+          <a class="card" href="showcase/measured.html"><b>Measured 光标聚光揭示 →</b><span>移动鼠标，下半屏用聚光揭示真实产品视频</span></a>
+          <a class="card" href="showcase/toonhub.html"><b>TOONHUB 手办轮播 →</b><span>点箭头切换，背景/缩放/模糊 650ms 一起淡变</span></a>
+          <a class="card" href="showcase/foldcraft.html"><b>Foldcraft 视频首屏 →</b><span>真实循环视频背景 + 标题错峰淡入</span></a>
+          </body></html>
+          HTML
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Foldcraft — Creative Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:'Geist',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:#000;color:#fff}
+  .root{position:relative;height:100vh;width:100%;overflow:hidden;background:#000}
+  .bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center}
+  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.15) 40%,rgba(0,0,0,.55));pointer-events:none}
+  .nav{position:relative;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:20px 24px}
+  @media(min-width:768px){.nav{padding:20px 48px}}
+  @media(min-width:1024px){.nav{padding:20px 64px}}
+  .brandrow{display:flex;align-items:center;gap:26px}
+  .brand{font-weight:600;letter-spacing:-.02em;font-size:20px}
+  .links{display:none;gap:22px}
+  .links a{font-size:14px;color:rgba(255,255,255,.8);text-decoration:none;transition:color .2s}
+  .links a:hover{color:#fff}
+  @media(min-width:768px){.links{display:flex}}
+  .talk{background:#fff;color:#000;border:none;border-radius:10px;padding:9px 20px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:transform .2s}
+  .talk:hover{transform:scale(1.05)}
+  .talk.desk{display:none}@media(min-width:768px){.talk.desk{display:inline-flex}}
+  .burger{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:transparent;border:none;color:#fff;cursor:pointer;z-index:50}
+  @media(min-width:768px){.burger{display:none}}
+  .burger svg{transition:transform .3s,opacity .3s}
+  .hero{position:relative;z-index:10;height:calc(100vh - 80px);display:flex;flex-direction:column;justify-content:space-between;padding:48px 24px 40px}
+  @media(min-width:768px){.hero{padding:80px 48px 64px}}
+  @media(min-width:1024px){.hero{padding:80px 64px 64px}}
+  .top{max-width:768px}
+  .badge{font-size:13px;color:rgba(255,255,255,.9);margin-bottom:18px;animation:fadeSlideUp .8s ease .2s both}
+  @media(min-width:640px){.badge{font-size:14px;margin-bottom:24px}}
+  h1{font-weight:500;line-height:1.1;letter-spacing:-.02em;font-size:32px;animation:fadeSlideUp .8s ease .4s both}
+  @media(min-width:640px){h1{font-size:52px}}
+  @media(min-width:768px){h1{font-size:64px}}
+  @media(min-width:1024px){h1{font-size:80px}}
+  .lead{color:rgba(255,255,255,.6);font-size:15px;line-height:1.6;max-width:340px;margin-bottom:20px;animation:fadeSlideUp .8s ease .7s both}
+  @media(min-width:640px){.lead{font-size:18px;max-width:520px;margin-bottom:24px}}
+  .cta{background:#fff;color:#000;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .2s;animation:fadeSlideUp .8s ease .9s both}
+  .cta:hover{transform:scale(1.05)}
+  .menu{position:absolute;inset-inline:0;top:0;z-index:20;overflow:hidden;background:rgba(0,0,0,.98);backdrop-filter:blur(20px);transition:height .5s cubic-bezier(.16,1,.3,1),opacity .5s cubic-bezier(.16,1,.3,1);height:0;opacity:0;pointer-events:none}
+  .menu.open{height:100vh;opacity:1;pointer-events:auto}
+  .menu-inner{display:flex;height:100%;flex-direction:column;justify-content:center;gap:22px;padding:0 32px;transform:translateY(32px);opacity:0;transition:transform .5s ease .1s,opacity .5s ease .1s}
+  .menu.open .menu-inner{transform:none;opacity:1}
+  .menu-inner a{font-size:30px;font-weight:500;color:rgba(255,255,255,.9);text-decoration:none}
+  .menu-inner a:hover{color:#fff}
+  .menu-talk{margin-top:8px;align-self:flex-start;background:#fff;color:#000;border:none;border-radius:999px;padding:14px 32px;font-size:16px;font-weight:500;font-family:inherit;cursor:pointer}
+  @keyframes fadeSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+  <div class="root">
+    <video class="bgvid" autoplay muted loop playsinline
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4"></video>
+    <div class="shade"></div>
+
+    <nav class="nav">
+      <div class="brandrow">
+        <span class="brand">Foldcraft</span>
+        <div class="links"><a href="#">Home</a><a href="#">Projects</a><a href="#">Studio</a><a href="#">Reach Us</a></div>
+      </div>
+      <button class="talk desk">Let's Talk</button>
+      <button class="burger" id="burger" aria-label="menu">
+        <svg id="ic-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>
+      </button>
+    </nav>
+
+    <div class="hero">
+      <div class="top">
+        <div class="badge">Brand &amp; Visual Storytelling</div>
+        <h1>Shaping visual<br>narratives,<br>one pixel at a time.</h1>
+      </div>
+      <div class="bottom">
+        <p class="lead">Turning vision into reality through craft, motion, and an endless pursuit of beauty.</p>
+        <button class="cta">Explore Work
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="menu" id="menu">
+      <div class="menu-inner">
+        <a href="#" data-close>Home</a><a href="#" data-close>Projects</a><a href="#" data-close>Studio</a><a href="#" data-close>Reach Us</a>
+        <button class="menu-talk" data-close>Let's Talk</button>
+      </div>
+    </div>
+  </div>
+<script>
+  const burger=document.getElementById('burger'), menu=document.getElementById('menu');
+  function set(open){menu.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';
+    burger.innerHTML=open
+      ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>'
+      : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>';
+  }
+  burger.addEventListener('click',()=>set(!menu.classList.contains('open')));
+  menu.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>set(false)));
+</script>
+</body>
+</html>

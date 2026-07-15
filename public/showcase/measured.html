@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Measured — Wearable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0a0a0a;color:#fff;overflow:hidden}
+  .hero{position:relative;height:100vh;width:100%;overflow:hidden;background:#0a0a0a}
+
+  /* layer 1 — grid + parallax */
+  .grid{position:absolute;inset:-60px;z-index:0;opacity:.1;
+    background-image:repeating-linear-gradient(0deg,transparent 0 47.4px,#64748b 47.4px 48px),repeating-linear-gradient(90deg,transparent 0 47.4px,#64748b 47.4px 48px);
+    will-change:transform}
+  /* layer 2 — background image */
+  .bgimg{position:absolute;inset:0;z-index:10;background-position:center;background-size:cover;background-repeat:no-repeat;
+    background-image:url('https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260713_140344_79e1296a-86d7-43fd-9b5f-63ffe560f291.png&w=1280&q=85')}
+  /* layer 3 — hero text */
+  .title{position:absolute;left:0;right:0;top:80px;z-index:20;text-align:center;font-family:'Instrument Serif',Georgia,serif;color:#fff;line-height:.9;font-size:4.5rem;text-transform:capitalize}
+  @media(min-width:480px){.title{top:112px;font-size:5.5rem}}
+  @media(min-width:640px){.title{font-size:10rem}}
+  @media(min-width:768px){.title{top:128px;font-size:13rem}}
+  @media(min-width:1024px){.title{font-size:16rem}}
+  /* layer 4 — overlay image */
+  .overlay{position:absolute;inset:0;z-index:25;width:100%;height:100%;object-fit:cover;pointer-events:none}
+  /* layer 5 — spotlight reveal */
+  .reveal{position:absolute;inset:0;z-index:30;clip-path:inset(40% 0 0 0);pointer-events:none;
+    -webkit-mask-image:radial-gradient(260px at 50% 70%,#fff 0%,#fff 40%,rgba(255,255,255,.75) 60%,rgba(255,255,255,.4) 75%,rgba(255,255,255,.12) 88%,transparent 100%);
+    mask-image:radial-gradient(260px at 50% 70%,#fff 0%,#fff 40%,rgba(255,255,255,.75) 60%,rgba(255,255,255,.4) 75%,rgba(255,255,255,.12) 88%,transparent 100%)}
+  .reveal video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:20px 24px}
+  .logo{width:28px;height:28px}
+  .pill{display:none;position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:50;gap:2px;padding:5px 8px;border-radius:999px}
+  @media(min-width:768px){.pill{display:flex}}
+  .pill button{background:transparent;border:none;color:rgba(255,255,255,.7);font-size:14px;font-weight:500;font-family:inherit;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:color .2s}
+  .pill button:hover{color:#fff}
+  .cta{display:none;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;color:#fff;font-size:14px;font-weight:500;cursor:pointer}
+  @media(min-width:768px){.cta{display:inline-flex}}
+  .dot{width:8px;height:8px;border-radius:50%;background:#4ade80}
+  .burger{display:inline-flex;align-items:center;justify-content:center;gap:4px;flex-direction:column;width:44px;height:44px;border-radius:999px;cursor:pointer}
+  @media(min-width:768px){.burger{display:none}}
+  .burger span{display:block;height:1.5px;background:#fff}
+  .burger span:first-child{width:20px}.burger span:last-child{width:14px}
+
+  /* liquid glass */
+  .liquid-glass{background:rgba(255,255,255,.01);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border:none;box-shadow:inset 0 1px 1px rgba(255,255,255,.1);position:relative;overflow:hidden}
+  .liquid-glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,.15) 20%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.15) 80%,rgba(255,255,255,.45) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+
+  /* mobile menu */
+  .mmenu{position:fixed;inset:0;z-index:55;background:#0a0a0a;display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+  .mmenu.open{display:flex}
+  .mmenu a{font-size:30px;color:rgba(255,255,255,.9);text-decoration:none;font-weight:500}
+  .mclose{position:fixed;top:20px;right:24px;width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .mclose span{position:absolute;width:18px;height:1.5px;background:#fff}
+  .mclose span:first-child{transform:rotate(45deg)}.mclose span:last-child{transform:rotate(-45deg)}
+  .mcta{margin-top:14px;display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:999px;color:#fff;font-size:16px;font-weight:500;cursor:pointer}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <section class="hero" id="hero">
+    <div class="grid" id="grid"></div>
+    <div class="bgimg"></div>
+    <h1 class="title">Measured</h1>
+    <img class="overlay" src="https://soft-zoom-63098134.figma.site/_assets/v11/3f10f1876e118f72a396e05a6c2d099569478272.png" alt="" />
+    <div class="reveal" id="reveal">
+      <video autoplay muted loop playsinline
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260713_162101_0d7498c5-29bb-47bf-a99f-2773c0a880a9.mp4"></video>
+    </div>
+  </section>
+
+  <nav>
+    <svg class="logo" viewBox="0 0 256 256" fill="#fff" aria-label="Measured"><path d="M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 96 95 L 63.5 128 L 64 128 L 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 64 L 64 0 L 192 0 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z"/></svg>
+    <div class="cta liquid-glass"><span class="dot"></span>Reserve Yours</div>
+    <div class="burger liquid-glass" id="burger"><span></span><span></span></div>
+  </nav>
+  <div class="pill liquid-glass">
+    <button>Device</button><button>Real Stories</button><button>Science</button><button>Plans</button><button>Reach Us</button>
+  </div>
+
+  <div class="mmenu" id="mmenu">
+    <div class="mclose liquid-glass" id="mclose"><span></span><span></span></div>
+    <a href="#" data-mclose>Device</a><a href="#" data-mclose>Real Stories</a><a href="#" data-mclose>Science</a><a href="#" data-mclose>Plans</a><a href="#" data-mclose>Reach Us</a>
+    <div class="mcta liquid-glass" data-mclose><span class="dot"></span>Reserve Yours</div>
+  </div>
+
+<script>
+  const hero=document.getElementById('hero'), reveal=document.getElementById('reveal'), grid=document.getElementById('grid');
+  const R=260;
+  let tx=null,ty=null,sx=0,sy=0,gx=0,gy=0,init=false;
+  hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();tx=e.clientX-r.left;ty=e.clientY-r.top;if(!init){sx=tx;sy=ty;init=true;}});
+  function frame(){
+    if(init){
+      sx+=(tx-sx)*0.1; sy+=(ty-sy)*0.1;
+      const m=`radial-gradient(${R}px at ${sx.toFixed(1)}px ${sy.toFixed(1)}px,#fff 0%,#fff 40%,rgba(255,255,255,.75) 60%,rgba(255,255,255,.4) 75%,rgba(255,255,255,.12) 88%,transparent 100%)`;
+      reveal.style.webkitMaskImage=m; reveal.style.maskImage=m;
+      const r=hero.getBoundingClientRect();
+      const ox=(sx-r.width/2)/r.width*16, oy=(sy-r.height/2)/r.height*16;
+      gx+=((-ox)-gx)*0.06; gy+=((-oy)-gy)*0.06;
+      grid.style.transform=`translate(${gx.toFixed(2)}px,${gy.toFixed(2)}px)`;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  const burger=document.getElementById('burger'), mmenu=document.getElementById('mmenu');
+  const open=v=>{mmenu.classList.toggle('open',v);document.body.style.overflow=v?'hidden':'';};
+  burger.addEventListener('click',()=>open(true));
+  document.getElementById('mclose').addEventListener('click',()=>open(false));
+  mmenu.querySelectorAll('[data-mclose]').forEach(el=>el.addEventListener('click',()=>open(false)));
+</script>
+</body>
+</html>

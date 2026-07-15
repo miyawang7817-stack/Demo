@@ -99,6 +99,18 @@
   .note{font-size:12.5px;color:var(--accent2)}
   .copybtn{background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:600;font-size:13px;padding:7px 14px;border-radius:9px;cursor:pointer}
   .copybtn:hover{background:var(--accent-hover)}
+  .stage{cursor:pointer}
+  .playhint{position:absolute;top:12px;right:12px;font-size:11px;color:#fff;background:rgba(0,0,0,.55);padding:3px 9px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .card:hover .playhint{opacity:1}
+  .cardfoot{margin-top:12px}
+  .promptbtn{width:100%;font-family:inherit;font-weight:600;font-size:13px;padding:9px 12px;border-radius:10px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent) 16%,transparent);color:#fff;cursor:pointer;transition:background .15s}
+  .promptbtn:hover{background:color-mix(in srgb,var(--accent) 32%,transparent)}
+  .overlay.fs .sheet{inset:0;margin:0;max-width:none;max-height:none;border-radius:0;border:0;background:#000}
+  .overlay.fs .bigstage{aspect-ratio:auto;height:100vh}
+  .overlay.fs .content{display:none}
+  .overlay.fs .hd{position:fixed;top:0;left:auto;right:0;background:transparent;border:0;padding:12px;z-index:10}
+  .overlay.fs .hd button{background:rgba(0,0,0,.5);border-radius:999px;width:42px;height:42px;color:#fff;font-size:16px}
+  .overlay.fs #backBtn{display:none}
   .liquid-glass{background:rgba(255,255,255,.04);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:none;box-shadow:inset 0 1px 1px rgba(255,255,255,.14);position:relative;overflow:hidden}
   .liquid-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,.15) 20%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.15) 80%,rgba(255,255,255,.45) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
   @keyframes fadeSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
@@ -461,7 +473,6 @@ function foldcraft(host,{big}={}){
 }
 
 function embedFrame(host,url,opts){var big=opts&&opts.big;var f=document.createElement("iframe");f.src=url;f.loading="lazy";f.setAttribute("scrolling","no");f.title="effect";f.style.cssText="position:absolute;inset:0;width:100%;height:100%;border:0;"+(big?"":"pointer-events:none;");host.appendChild(f);return function(){try{host.removeChild(f);}catch(e){}};}
-
 /* ---------- content ---------- */
 const DICT={
   en:{ "nav.gallery":"Gallery","nav.pricing":"Pricing",
@@ -589,17 +600,23 @@ function renderGrid(){
   grid.innerHTML="";
   io=new IntersectionObserver(es=>es.forEach(e=>{ e.isIntersecting?startStage(e.target):stopStage(e.target); }),{rootMargin:"120px"});
   DEMOS.forEach((d,i)=>{
-    const card=document.createElement("button"); card.className="card";
+    const card=document.createElement("div"); card.className="card";
     const stage=document.createElement("div"); stage.className="stage"; stage.dataset.i=i;
     stage.innerHTML=`<div class="scrim"></div>
       <span class="badge live"><span class="dot"></span>${t("live")}</span>
       <span class="badge ${d.premium?"premium":"free"}">${d.premium?t("card.premium"):t("card.free")}</span>
+      <span class="playhint">⛶ ${lang==="zh"?"点击全屏体验":"Click for fullscreen"}</span>
       <span class="ttl">${lang==="zh"?d.titleZh:d.titleEn}</span>`;
     const body=document.createElement("div"); body.className="body";
     body.innerHTML=`<h3>${lang==="zh"?d.titleZh:d.titleEn}</h3><p>${lang==="zh"?d.sumZh:d.sumEn}</p>
       <div class="tags">${d.tags.map(x=>`<span class="tag">${x}</span>`).join("")}</div>`;
+    const foot=document.createElement("div"); foot.className="cardfoot";
+    const pbtn=document.createElement("button"); pbtn.className="promptbtn";
+    pbtn.textContent=d.premium?`${t("unlockCta")} ${d.price||""}`.trim():t("demo.copyPrompt");
+    pbtn.addEventListener("click",ev=>{ev.stopPropagation();copyPrompt(i,pbtn);});
+    foot.appendChild(pbtn); body.appendChild(foot);
     card.appendChild(stage); card.appendChild(body);
-    card.addEventListener("click",()=>openDemo(i));
+    stage.addEventListener("click",()=>openFullscreen(i));
     grid.appendChild(card);
     io.observe(stage);
   });
@@ -610,36 +627,30 @@ function renderPricing(){
 }
 
 /* ---------- detail ---------- */
+function copyPrompt(i, btn){
+  const d=DEMOS[i]; const prompt=lang==="zh"?d.promptZh:d.promptEn;
+  const orig=btn.textContent;
+  if(d.premium && !unlocked.has(d.id)){
+    btn.textContent=lang==="zh"?"精品 · 需付费解锁":"Premium — unlock to copy";
+    setTimeout(()=>{btn.textContent=orig;},1700); return;
+  }
+  if(navigator.clipboard && prompt) navigator.clipboard.writeText(prompt).catch(()=>{});
+  btn.textContent=t("demo.copied");
+  setTimeout(()=>{btn.textContent=orig;},1500);
+}
+
 let bigStop=null;
-function openDemo(i){
+function openFullscreen(i){
   const d=DEMOS[i];
-  const title=lang==="zh"?d.titleZh:d.titleEn, sum=lang==="zh"?d.sumZh:d.sumEn, prompt=lang==="zh"?d.promptZh:d.promptEn;
-  const isUnlocked=!d.premium||unlocked.has(d.id);
   const bs=document.getElementById("bigStage");
   if(bigStop){bigStop();bigStop=null;} bs.innerHTML="";
-  bigStop=d.fn(bs,{big:true,interactive:d.interactive});
-  bs.insertAdjacentHTML("beforeend",`<div class="lbl">${title}</div>${d.interactive?`<div class="hint">${t("interact")}</div>`:""}`);
-  document.getElementById("backBtn").textContent="← "+t("nav.gallery");
-
-  const c=document.getElementById("content"); c.innerHTML="";
-  const lead=document.createElement("p"); lead.className="lead"; lead.textContent=sum; c.appendChild(lead);
-  const box=document.createElement("div"); box.className="prompt-box"+(isUnlocked?"":" locked");
-  box.innerHTML=`<div class="row"><span class="lbl">${t("demo.promptTitle")}</span>${isUnlocked?`<button class="copybtn" id="copyBtn">${t("demo.copyPrompt")}</button>`:""}</div>
-    <pre>${escapeHtml(isUnlocked?prompt:prompt.slice(0,150)+" …")}</pre>${isUnlocked?`<p class="hint">${t("demo.promptHint")}</p>`:""}`;
-  c.appendChild(box);
-  if(isUnlocked){
-    const n=document.createElement("p"); n.className="note"; n.textContent=t("signedNote"); c.appendChild(n);
-    box.querySelector("#copyBtn").addEventListener("click",e=>{navigator.clipboard&&navigator.clipboard.writeText(prompt).catch(()=>{});e.target.textContent=t("demo.copied");setTimeout(()=>e.target.textContent=t("demo.copyPrompt"),1500);});
-  }else{
-    const u=document.createElement("div"); u.className="unlock";
-    u.innerHTML=`<h4>${t("demo.unlockTitle")}</h4><p>${t("demo.unlockSub")}</p><button class="btn btn-primary" id="unlockBtn">${t("unlockCta")} ${d.price}</button>`;
-    c.appendChild(u);
-    u.querySelector("#unlockBtn").addEventListener("click",()=>{unlocked.add(d.id);openDemo(i);});
-  }
-  document.getElementById("overlay").classList.add("open");
+  bigStop=d.fn(bs,{big:true,interactive:true});
+  bs.insertAdjacentHTML("beforeend",`<div class="lbl">${lang==="zh"?d.titleZh:d.titleEn}</div>${d.interactive?`<div class="hint">${t("interact")}</div>`:""}`);
+  const c=document.getElementById("content"); if(c) c.innerHTML="";
+  const ov=document.getElementById("overlay"); ov.classList.add("open"); ov.classList.add("fs");
   document.body.style.overflow="hidden";
 }
-function closeDemo(){ document.getElementById("overlay").classList.remove("open"); document.body.style.overflow=""; if(bigStop){bigStop();bigStop=null;} document.getElementById("bigStage").innerHTML=""; }
+function closeDemo(){ const ov=document.getElementById("overlay"); ov.classList.remove("open"); ov.classList.remove("fs"); document.body.style.overflow=""; if(bigStop){bigStop();bigStop=null;} const bs=document.getElementById("bigStage"); if(bs) bs.innerHTML=""; }
 function escapeHtml(s){return s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));}
 
 document.querySelectorAll("[data-close]").forEach(el=>el.addEventListener("click",closeDemo));

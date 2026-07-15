@@ -24,6 +24,7 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { slugify } from "../src/lib/slug";
+import { getTranslator, safeTranslate } from "../src/lib/translate";
 
 export type Card = {
   title: string;
@@ -146,9 +147,12 @@ async function main() {
   console.log(`Parsed ${cards.length} cards from ${fileArg || source.url}`);
 
   const prisma = new PrismaClient();
+  const translator = getTranslator(); // no-op unless TRANSLATE_PROVIDER is set
   let created = 0;
   for (const card of cards) {
     const slug = await uniqueSlug(prisma, slugify(`${sourceKey}-${card.title}`));
+    // Translate the title now if a provider is configured; otherwise EN in both slots.
+    const titleZh = await safeTranslate(translator, card.title, "zh");
 
     let liveUrl = card.href;
     if (full) {
@@ -171,7 +175,7 @@ async function main() {
       create: {
         slug,
         titleEn: card.title,
-        titleZh: card.title, // translate later; crawler leaves EN in both slots
+        titleZh, // translated if a provider is set, else EN; `npm run translate` backfills
         summaryEn: "",
         summaryZh: "",
         thumbnail: card.thumbnail,

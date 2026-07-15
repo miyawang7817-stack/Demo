@@ -59,6 +59,24 @@ The parser (`parseCards`) is pure and unit-tested — run it offline with `npx t
 
 > ⚖️ Recommended model: keep crawled Codrops/motionsites demos **attributed and free** (they drive discovery and link out), and monetize only **original / creator-uploaded** prompts you have the rights to.
 
+## 🌐 Auto-translation (EN → ZH)
+
+The gallery is bilingual, but the crawler only sees English titles. A pluggable
+translation layer fills the Chinese side.
+
+```bash
+# .env — pick one provider (default is a no-op, so it never blocks a crawl)
+TRANSLATE_PROVIDER=anthropic   # Claude; also set ANTHROPIC_API_KEY (+ optional TRANSLATE_MODEL)
+# TRANSLATE_PROVIDER=deepl     # DeepL; also set DEEPL_API_KEY
+
+npm run translate              # backfill ZH for every demo whose Chinese is missing
+```
+
+- The **crawler translates titles inline** when a provider is set; otherwise it leaves English in both slots.
+- **`npm run translate`** is an idempotent backfill — it only touches fields where Chinese is empty or still identical to English, so re-running is safe and cheap.
+- The fill logic (`fillMissingZh`) is pure and **unit-tested offline**: `npx tsx scripts/translate.test.ts`.
+- With `TRANSLATE_PROVIDER` unset, everything runs unchanged — translation is strictly additive.
+
 ## 🏗️ Stack & layout
 
 Next.js 14 (App Router) · TypeScript · Tailwind · Prisma · Stripe.

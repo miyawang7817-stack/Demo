@@ -11,12 +11,14 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "crawl": "tsx scripts/crawl.ts",
+    "translate": "tsx scripts/translate.ts",
     "setup": "prisma db push && tsx prisma/seed.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
     "@prisma/client": "^5.22.0",
     "next": "14.2.15",
     "react": "^18.3.1",

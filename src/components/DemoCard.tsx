@@ -18,7 +18,22 @@ export default function DemoCard({ demo, locale }: { demo: DemoView; locale: Loc
       className="card-hover group block overflow-hidden rounded-2xl border border-white/10 bg-panel"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-black/40">
-        {demo.thumbnail ? (
+        {demo.liveUrl.startsWith("/showcase/") ? (
+          <>
+            <iframe
+              src={demo.liveUrl}
+              title={demo.title}
+              loading="lazy"
+              scrolling="no"
+              tabIndex={-1}
+              className="pointer-events-none h-full w-full border-0"
+            />
+            <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-0.5 text-xs text-white">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent2 shadow-[0_0_8px] shadow-accent2" />
+              LIVE
+            </span>
+          </>
+        ) : demo.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={demo.thumbnail}

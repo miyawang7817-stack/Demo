@@ -197,6 +197,64 @@ const crawledCodrops = [
   promptZh: "",
 }));
 
+// Showcase: full landing-hero effects that run live in the app via an <iframe>
+// pointing at the self-contained page in /public/showcase. Each carries the exact
+// build prompt so the copy-prompt entry works.
+const showcase = [
+  {
+    slug: "toonhub-carousel",
+    titleEn: "TOONHUB Figurine Carousel",
+    titleZh: "TOONHUB 手办轮播",
+    summaryEn: "A full-screen character carousel: arrows rotate roles while background, scale and blur crossfade in 650ms.",
+    summaryZh: "全屏角色轮播：方向键切换，背景/缩放/模糊在 650ms 内一起淡变。",
+    tags: "carousel,3d,hero",
+    liveUrl: "/showcase/toonhub.html",
+    isPremium: false,
+    priceCents: 0,
+    promptEn:
+      "Build a single full-viewport hero carousel called 'TOONHUB' in React + TypeScript + Vite + Tailwind, icons from lucide-react.\n\n4 items, each with an image src and two colors (bg / panel): #F4845F/#F79B7F, #6BBF7A/#85CC92, #E882B4/#ED9DC4, #6EB5FF/#8DC4FF. Preload all 4 images on mount via new Image().\n\nState: activeIndex 0-3, isAnimating lock, isMobile (window.innerWidth < 640, update on resize). navigate(next|prev): ignore while animating; set lock; activeIndex = (i+1)%4 or (i+3)%4; release after 650ms. Roles from activeIndex: center=i, left=(i+3)%4, right=(i+1)%4, back=(i+2)%4.\n\nOuter div backgroundColor = active bg, transition background-color 650ms cubic-bezier(0.4,0,0.2,1), Inter font. Inner 100vh.\n- Grain overlay: SVG fractalNoise data URI (baseFrequency 0.9, numOctaves 4), container opacity 0.4, backgroundSize 200px, zIndex 50.\n- Ghost text '3D SHAPE' centered, Anton font, fontSize clamp(90px,28vw,380px), weight 900, white, uppercase, top 18%, zIndex 2.\n- Top-left brand 'TOONHUB', text-xs semibold uppercase, letterSpacing 0.18em.\n- Carousel zIndex 3: each item position absolute, aspectRatio 0.6/1, img objectFit contain, objectPosition bottom center. center: translateX(-50%) scale(1.68/1.25 mobile), no blur, opacity 1, left 50%, height 92%/60%, bottom 0/22%. left: scale 1, blur 2px, opacity 0.85, left 30%/20%, height 28%/16%, bottom 12%/32%. right = left at left 70%/80%. back: scale 1, blur 4px, opacity 1, left 50%, height 22%/13%, bottom 12%/32%. Transition transform/filter/opacity/left over 650ms cubic-bezier(0.4,0,0.2,1).\n- Bottom-left: 'TOONHUB FIGURINES' bold uppercase; a paragraph hidden on mobile; two 48/64px circular buttons (2px white border, transparent, ArrowLeft/ArrowRight size 26) calling navigate.\n- Bottom-right 'DISCOVER IT' Anton clamp(20px,4vw,56px) white uppercase + ArrowRight.\n\nBehavior: arrows rotate roles; background, positions, scales, blurs and opacities all crossfade together over 650ms.",
+    promptZh:
+      "用 React + TypeScript + Vite + Tailwind + lucide-react 做全屏英雄区手办轮播 TOONHUB。4 个 item，每个含图片与两种颜色（bg/panel）：#F4845F/#F79B7F、#6BBF7A/#85CC92、#E882B4/#ED9DC4、#6EB5FF/#8DC4FF，挂载时预加载。状态 activeIndex、动画锁、isMobile(<640)。navigate 切换 (i±1)%4，650ms 内锁定。角色 center/left/right/back 由 activeIndex 推导。外层背景色=当前 bg，随 650ms cubic-bezier(.4,0,.2,1) 过渡。巨型幽灵文字 '3D SHAPE'（Anton，clamp(90,28vw,380)）。轮播每项 aspect .6/1，按角色设置 translateX(-50%)+scale、blur、opacity、left、height、bottom，同一 650ms 缓动同时切换。左下 'TOONHUB FIGURINES' + 两个圆形箭头按钮，右下 'DISCOVER IT'。",
+  },
+  {
+    slug: "measured-spotlight",
+    titleEn: "Measured — Spotlight Reveal",
+    titleZh: "Measured 光标聚光揭示",
+    summaryEn: "A dark hero where a cursor spotlight reveals a moving video over a parallax grid and a giant serif title.",
+    summaryZh: "深色首屏：光标聚光揭示下方运动视频，叠加视差网格与巨型衬线标题。",
+    tags: "spotlight,cursor,hero",
+    liveUrl: "/showcase/measured.html",
+    isPremium: true,
+    priceCents: 600,
+    promptEn:
+      "Build a fullscreen (100vh) dark hero for a wearable product 'Measured' in React + Vite + Tailwind + TS.\n\nFonts: Inter global; Instrument Serif for the hero word 'Measured'; a self-hosted Helvetica Neue via @font-face.\nLayers (z order): grid background (z0, opacity 0.1, 48px cells, L-path stroke #64748b 0.6, parallax-shifts with cursor: offset = cursorFromCenter * 16 eased 0.06); background image bg-cover (z10); hero text 'Measured' Instrument Serif, text-[4.5rem] up to lg:text-[16rem], leading-[0.9], white, top-20..32 (z20); semi-transparent overlay PNG w-full h-full object-cover pointer-events-none (z25); spotlight reveal (z30).\n\nSpotlight: a cursor-following radial reveal, radius 260px, mask gradient stops white 0-40%, 0.75 at 60%, 0.4 at 75%, 0.12 at 88%, 0 at 100%. Draw the gradient at the smoothed cursor pos to a hidden canvas, export dataURL, apply as CSS mask-image on a div containing an autoplay muted loop playsInline video. Cursor smoothing: rAF lerp 0.1 (smooth += (target-smooth)*0.1). The video is clipped to the bottom 60% via clipPath inset(40% 0 0 0), so only the lower part reveals.\n\nNav (z50, fixed): white geometric SVG logo top-left; center frosted 'liquid-glass' pill with Device / Real Stories / Science / Plans / Reach Us; top-right liquid-glass 'Reserve Yours' with a green dot; mobile hamburger + fullscreen menu with staggered slide-up entries (60ms increments, cubic-bezier(0.77,0,0.18,1)).\n\nliquid-glass: background rgba(255,255,255,0.01), backdrop-filter blur(4px), inset box-shadow, and a border-only gradient via ::before with mask-composite exclude.",
+    promptZh:
+      "用 React + Vite + Tailwind + TS 做穿戴产品 'Measured' 的全屏(100vh)深色英雄区。字体 Inter 全局、Instrument Serif 用于标题、自托管 Helvetica Neue。分层：48px 视差网格(z0,opacity .1，偏移=光标离中心*16，缓动0.06)；背景图 bg-cover(z10)；巨型衬线标题 'Measured'(z20)；半透明叠加 PNG(z25)；聚光揭示(z30)。聚光：跟随光标的径向遮罩，半径260px，白 0-40%→.75@60%→.4@75%→.12@88%→0@100%，把渐变画到隐藏 canvas 导出 dataURL 作为 CSS mask，光标用 rAF lerp 0.1 平滑；下方视频 autoplay/muted/loop/playsInline，用 clipPath inset(40% 0 0 0) 只露下 60%。导航：白色几何 logo、中间磨砂 liquid-glass 胶囊菜单、右上 'Reserve Yours' 带绿点、移动端全屏菜单错峰滑入。liquid-glass：极淡背景 + blur(4px) + ::before 用 mask-composite exclude 做描边渐变。",
+  },
+  {
+    slug: "foldcraft-video-hero",
+    titleEn: "Foldcraft — Video Hero",
+    titleZh: "Foldcraft 视频首屏",
+    summaryEn: "A cinematic video hero with a frosted navbar and staggered fade-slide-up hero copy.",
+    summaryZh: "电影感视频首屏 + 磨砂导航 + 逐条淡入上滑的标题文案。",
+    tags: "hero,video,landing",
+    liveUrl: "/showcase/foldcraft.html",
+    isPremium: false,
+    priceCents: 0,
+    promptEn:
+      "Create a fullscreen (100vh) hero for a creative studio 'Foldcraft' in React + Tailwind + lucide-react.\n\nBackground: a looping mp4 (autoPlay muted loop playsInline), absolute full width/height, object-cover, object-position 70% center, behind all content. Font: Google Geist (300-700), applied as font-geist; body antialiased.\nRoot: relative h-screen w-full overflow-hidden bg-black font-geist.\n\nNavbar (z30): flex space-between, px-6 py-5 (md:px-12 lg:px-16). Left: logo 'Foldcraft' (text-lg font-semibold tracking-tight text-white sm:text-xl) + desktop links Home/Projects/Studio/Reach Us (text-sm text-white/80 hover:text-white). Right desktop: 'Let's Talk' (rounded-lg bg-white px-5 py-2 text-black hover:scale-105). Right mobile: hamburger toggle (40x40, z50) with animated Menu/X lucide icons (rotate 90deg + opacity + scale, duration-300).\n\nMobile menu (z20): absolute inset-x-0 top-0, bg-black/98 backdrop-blur-xl, transition duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] between h-screen opacity-100 and h-0 opacity-0; centered links text-3xl and a 'Let's Talk' pill.\n\nHero content (z10): flex column justify-between, h-[calc(100vh-80px)], px-6 pb-10 pt-12 (md scale up). Top (max-w-3xl): badge 'Brand & Visual Storytelling' with animate fadeSlideUp 0.8s ease 0.2s both; h1 'Shaping visual / narratives, / one pixel at a time.' with <br>, text-3xl..lg:text-7xl, font-medium leading-[1.1] tracking-tight text-white, fadeSlideUp delay 0.4s. Bottom: paragraph 'Turning vision into reality through craft, motion, and an endless pursuit of beauty.' (text-white/60, fadeSlideUp 0.7s) and CTA 'Explore Work' + ArrowRight (rounded-lg bg-white text-black hover:scale-105, fadeSlideUp 0.9s).\n\n@keyframes fadeSlideUp { from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:translateY(0) } }",
+    promptZh:
+      "用 React + Tailwind + lucide-react 做创意工作室 'Foldcraft' 的全屏(100vh)首屏。背景：循环 mp4(autoPlay/muted/loop/playsInline)，绝对全屏 object-cover、object-position 70% center，位于所有内容之下。字体 Google Geist，font-geist。根容器 relative h-screen w-full overflow-hidden bg-black。导航(z30)：左侧 logo 'Foldcraft' + 桌面链接 Home/Projects/Studio/Reach Us，右侧 'Let's Talk' 白底按钮；移动端汉堡按钮用 lucide Menu/X 旋转切换。移动菜单(z20)：全屏 bg-black/98 backdrop-blur-xl，duration-500 ease cubic-bezier(0.16,1,0.3,1)。英雄内容(z10)：徽章 + h1 'Shaping visual / narratives, / one pixel at a time.' + 段落 + 'Explore Work→' 按钮，全部 fadeSlideUp，延迟 0.2/0.4/0.7/0.9s 错峰淡入上滑。",
+  },
+].map((d) => ({
+  thumbnail: "",
+  source: "original",
+  sourceName: "MotionHub",
+  sourceUrl: "",
+  license: "",
+  ...d,
+}));
+
 async function main() {
   const demo = await prisma.user.upsert({
     where: { email: "studio@motionhub.dev" },
@@ -204,7 +262,7 @@ async function main() {
     create: { email: "studio@motionhub.dev", name: "MotionHub Studio" },
   });
 
-  const all = [...demos, ...crawledCodrops];
+  const all = [...demos, ...showcase, ...crawledCodrops];
   for (const d of all) {
     await prisma.demo.upsert({
       where: { slug: d.slug },
@@ -215,7 +273,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${all.length} demos (${crawledCodrops.length} crawled from Codrops).`);
+  console.log(`Seeded ${all.length} demos (${showcase.length} live showcase, ${crawledCodrops.length} crawled).`);
 }
 
 main()

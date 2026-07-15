@@ -42,7 +42,13 @@ export default async function DemoPage({
       </Link>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
-        {demo.thumbnail ? (
+        {demo.liveUrl.startsWith("/showcase/") ? (
+          <iframe
+            src={demo.liveUrl}
+            title={demo.title}
+            className="aspect-[16/9] w-full border-0"
+          />
+        ) : demo.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={demo.thumbnail} alt={demo.title} className="w-full object-cover" />
         ) : null}

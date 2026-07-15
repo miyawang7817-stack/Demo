@@ -3,7 +3,6 @@
 A bilingual (中文 / EN) gallery of web motion & WebGL effects. Browse demos,
 **copy the AI prompt** to regenerate an effect in your own AI tool, unlock
 premium prompts with a one-time payment, and let creators publish their own.
-Inspired by [motionsites.ai](https://motionsites.ai/).
 
 > Lives in the `motionhub/` subfolder; the repo's existing IU music site is untouched.
 

@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 70% -10%, #1a1533 0%, transparent 60%), #0a0a0f;
+  color: #e8e8f0;
+  min-height: 100vh;
+}
+
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px -20px rgba(124, 92, 255, 0.45);
+  border-color: rgba(124, 92, 255, 0.5);
+}
+
+.prompt-blur {
+  filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition-colors;
+}
+.btn-primary {
+  @apply bg-accent text-white hover:bg-[#6a4cf0];
+}
+.btn-ghost {
+  @apply border border-white/15 text-white/90 hover:bg-white/5;
+}
+.input {
+  @apply w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder-white/30 outline-none focus:border-accent;
+}
+.label {
+  @apply mb-1 block text-sm text-white/60;
+}

@@ -1,0 +1,85 @@
+{
+  "brand": "MotionHub",
+  "tagline": "网页动效与 WebGL 效果画廊——复制 prompt，用 AI 生成你自己的效果。",
+  "nav": {
+    "gallery": "画廊",
+    "upload": "分享 Demo",
+    "pricing": "定价",
+    "account": "账户",
+    "signIn": "登录",
+    "signOut": "退出"
+  },
+  "home": {
+    "heroTitle": "即取即用的动效灵感",
+    "heroSub": "浏览全网精选 demo。喜欢某个效果？复制它的 AI prompt 就能生成你自己的——免费的直接看，精品的一次性付费解锁。",
+    "browse": "进入画廊",
+    "share": "分享你的 Demo",
+    "featured": "精选",
+    "all": "全部 Demo",
+    "empty": "还没有 demo。运行爬虫或初始化数据库。"
+  },
+  "card": {
+    "free": "免费",
+    "premium": "精品",
+    "viewLive": "查看效果",
+    "by": "作者",
+    "source": "来源"
+  },
+  "demo": {
+    "copyPrompt": "复制 Prompt",
+    "copied": "已复制！",
+    "promptTitle": "AI Prompt",
+    "promptHint": "把它粘贴到你的 AI 工具（Claude、Cursor、v0……）里即可生成该效果。",
+    "unlockTitle": "解锁这个 Prompt",
+    "unlockSub": "一次性付费。支持信用卡、支付宝、微信支付。",
+    "unlockCta": "解锁，仅需",
+    "unlocked": "已解锁",
+    "viewOriginal": "查看原作",
+    "attribution": "此 demo 精选自外部来源，版权归原作者所有；上方链接指向原始作品。",
+    "signInToUnlock": "登录后解锁",
+    "tags": "标签"
+  },
+  "upload": {
+    "title": "分享你的 Demo",
+    "sub": "发布你自己的动效。附上 prompt 让别人也能生成，并选择 prompt 免费还是付费。",
+    "onlyOriginal": "只上传你原创或拥有授权的作品。第三方 demo 请改用注明出处并链接回原站的方式。",
+    "fTitleEn": "标题（英文）",
+    "fTitleZh": "标题（中文）",
+    "fSummaryEn": "简介（英文）",
+    "fSummaryZh": "简介（中文）",
+    "fLive": "效果链接（可在线看到效果的地址）",
+    "fThumb": "缩略图 URL",
+    "fTags": "标签（逗号分隔）",
+    "fPromptEn": "AI Prompt（英文）",
+    "fPromptZh": "AI Prompt（中文）",
+    "fPremium": "解锁 prompt 需付费",
+    "fPrice": "价格（单位：分，例如 500 = ¥5.00）",
+    "submit": "发布 Demo",
+    "success": "已发布！去画廊看看。",
+    "needSignIn": "请先登录。"
+  },
+  "pricing": {
+    "title": "定价",
+    "sub": "浏览 MotionHub 永久免费。只有解锁精品 prompt 才需付费——每个 demo 一次性付费。",
+    "freeTitle": "免费",
+    "freeList": ["浏览全部 demo", "在线查看所有效果", "复制所有免费 prompt", "分享你自己的 demo"],
+    "premiumTitle": "精品 Prompt",
+    "premiumList": ["每个 prompt 一次性付费", "支持信用卡、支付宝、微信", "完整、可直接复制的 AI prompt", "解锁后永久属于你"],
+    "creatorTitle": "面向创作者",
+    "creatorList": ["发布无限个 demo", "自由设置 prompt 免费或付费", "触达中英双语用户"]
+  },
+  "account": {
+    "title": "你的账户",
+    "signedInAs": "当前登录",
+    "unlocked": "已解锁的 Prompt",
+    "yourDemos": "你的 Demo",
+    "none": "还没有内容。",
+    "emailLabel": "邮箱",
+    "nameLabel": "昵称（可选）",
+    "signInCta": "继续"
+  },
+  "footer": {
+    "note": "精选 demo 均链接回原作者。Prompt 用于让你用 AI 工具生成自己的效果。",
+    "built": "基于 Next.js 构建"
+  }
+}

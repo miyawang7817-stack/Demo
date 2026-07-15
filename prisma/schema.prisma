@@ -1,0 +1,67 @@
+// MotionHub schema. Dev uses SQLite; switch provider to "postgresql" for prod.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  demos     Demo[]    @relation("AuthoredDemos")
+  unlocks   Unlock[]
+}
+
+model Demo {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  // Bilingual fields
+  titleEn     String
+  titleZh     String
+  summaryEn   String   @default("")
+  summaryZh   String   @default("")
+  tags        String   @default("") // comma-separated
+
+  // Media
+  thumbnail   String   @default("") // remote or /embeds/... url
+  liveUrl     String   @default("") // where the effect can be seen live
+
+  // Origin / attribution
+  source      String   @default("original") // original | codrops | motionsites | creator
+  sourceName  String   @default("")          // e.g. "Codrops", author handle
+  sourceUrl   String   @default("")          // link back to the original
+  license     String   @default("")          // license note for attributed items
+
+  // The AI prompt users copy to regenerate the effect.
+  promptEn    String   @default("")
+  promptZh    String   @default("")
+
+  // Monetization: free demos never paywall the prompt.
+  isPremium   Boolean  @default(false)
+  priceCents  Int      @default(0)
+
+  // Moderation for creator uploads.
+  status      String   @default("published") // pending | published | rejected
+
+  authorId    String?
+  author      User?    @relation("AuthoredDemos", fields: [authorId], references: [id])
+
+  createdAt   DateTime @default(now())
+  unlocks     Unlock[]
+}
+
+model Unlock {
+  id        String   @id @default(cuid())
+  userId    String
+  demoId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  demo      Demo     @relation(fields: [demoId], references: [id])
+
+  @@unique([userId, demoId])
+}

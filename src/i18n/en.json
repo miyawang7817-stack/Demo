@@ -1,0 +1,85 @@
+{
+  "brand": "MotionHub",
+  "tagline": "A gallery of web motion & WebGL effects — copy the prompt, generate your own with AI.",
+  "nav": {
+    "gallery": "Gallery",
+    "upload": "Share a demo",
+    "pricing": "Pricing",
+    "account": "Account",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "home": {
+    "heroTitle": "Motion effects, ready to remix",
+    "heroSub": "Browse curated demos from across the web. Like an effect? Copy its AI prompt and generate your own — free ones are open, premium ones unlock with a one-time payment.",
+    "browse": "Browse the gallery",
+    "share": "Share your demo",
+    "featured": "Featured",
+    "all": "All demos",
+    "empty": "No demos yet. Run the crawler or seed the database."
+  },
+  "card": {
+    "free": "Free",
+    "premium": "Premium",
+    "viewLive": "View live",
+    "by": "by",
+    "source": "Source"
+  },
+  "demo": {
+    "copyPrompt": "Copy prompt",
+    "copied": "Copied!",
+    "promptTitle": "AI prompt",
+    "promptHint": "Paste this into your AI tool (Claude, Cursor, v0, …) to generate the effect.",
+    "unlockTitle": "Unlock this prompt",
+    "unlockSub": "One-time payment. Pay by card, Alipay or WeChat Pay.",
+    "unlockCta": "Unlock for",
+    "unlocked": "Unlocked",
+    "viewOriginal": "View the original",
+    "attribution": "This demo is curated from an external source. All credit goes to the original author; the link above points to the original work.",
+    "signInToUnlock": "Sign in to unlock",
+    "tags": "Tags"
+  },
+  "upload": {
+    "title": "Share your demo",
+    "sub": "Publish your own motion effect. Add a prompt so others can regenerate it, and choose whether the prompt is free or premium.",
+    "onlyOriginal": "Only upload work you created or have the rights to. Attributed third-party demos should link back to their source instead.",
+    "fTitleEn": "Title (English)",
+    "fTitleZh": "Title (中文)",
+    "fSummaryEn": "Short description (English)",
+    "fSummaryZh": "Short description (中文)",
+    "fLive": "Live URL (where the effect runs)",
+    "fThumb": "Thumbnail image URL",
+    "fTags": "Tags (comma separated)",
+    "fPromptEn": "AI prompt (English)",
+    "fPromptZh": "AI prompt (中文)",
+    "fPremium": "Charge to unlock the prompt",
+    "fPrice": "Price (in cents, e.g. 500 = $5.00)",
+    "submit": "Publish demo",
+    "success": "Published! View it in the gallery.",
+    "needSignIn": "Please sign in first."
+  },
+  "pricing": {
+    "title": "Pricing",
+    "sub": "MotionHub is free to browse. You only pay to unlock premium prompts — one time, per demo.",
+    "freeTitle": "Free",
+    "freeList": ["Browse every demo", "View all effects live", "Copy every free prompt", "Share your own demos"],
+    "premiumTitle": "Premium prompt",
+    "premiumList": ["One-time payment per prompt", "Pay by card, Alipay or WeChat Pay", "Full copy-ready AI prompt", "Yours forever once unlocked"],
+    "creatorTitle": "For creators",
+    "creatorList": ["Publish unlimited demos", "Set your own prompts free or premium", "Reach a bilingual audience"]
+  },
+  "account": {
+    "title": "Your account",
+    "signedInAs": "Signed in as",
+    "unlocked": "Unlocked prompts",
+    "yourDemos": "Your demos",
+    "none": "Nothing yet.",
+    "emailLabel": "Email",
+    "nameLabel": "Name (optional)",
+    "signInCta": "Continue"
+  },
+  "footer": {
+    "note": "Curated demos link back to their original authors. Prompts are for regenerating your own effects with AI tools.",
+    "built": "Built with Next.js"
+  }
+}

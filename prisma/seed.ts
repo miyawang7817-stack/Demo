@@ -117,6 +117,86 @@ const demos = [
   },
 ];
 
+// Real demos gathered from Codrops (title + original link). Free & attributed —
+// the crawler produces exactly this shape; these are checked-in examples so a
+// fresh `npm run setup` already shows real content. Run `npm run crawl` to add more.
+const CODROPS_LICENSE = "© original author on Codrops. Attributed; the link points to the original work.";
+const crawledCodrops = [
+  ["cr-scroll-gallery", "Scroll-Revealed WebGL Gallery", "滚动揭示的 WebGL 画廊",
+    "A multi-page WebGL image gallery with scroll-triggered shader reveals and seamless page transitions (GSAP · Three.js · Astro · Barba.js).",
+    "多页 WebGL 图片画廊，滚动触发着色器揭示 + 无缝翻页转场（GSAP · Three.js · Astro · Barba.js）。",
+    "webgl,scroll,three.js", "https://tympanus.net/codrops/2026/02/02/building-a-scroll-revealed-webgl-gallery-with-gsap-three-js-astro-and-barba-js/"],
+  ["cr-3d-mood", "Scroll-Reactive 3D Gallery", "随滚动反应的 3D 画廊",
+    "A scroll-driven WebGL gallery with depth-layered images, palette-driven backgrounds, and motion that responds to scroll velocity.",
+    "滚动驱动的 WebGL 画廊，图片按深度分层、背景随色板变化、动态响应滚动速度。",
+    "three.js,3d,scroll", "https://tympanus.net/codrops/2026/03/09/building-a-scroll-reactive-3d-gallery-with-three-js-velocity-and-mood-based-backgrounds/"],
+  ["cr-blender-path", "Blender Camera-Path 3D Gallery", "Blender 相机路径 3D 画廊",
+    "A cinematic, scroll-driven 3D gallery flying along a camera path authored in Blender, rendered with Three.js and animated with GSAP.",
+    "电影感的滚动 3D 画廊，沿 Blender 里做的相机路径穿行，Three.js 渲染、GSAP 驱动。",
+    "three.js,blender,scroll", "https://tympanus.net/codrops/2026/07/07/building-a-scroll-driven-3d-gallery-using-a-blender-camera-path-with-three-js-and-gsap/"],
+  ["cr-image-tube", "Scroll-Driven 3D Image Tube", "滚动驱动的 3D 图片隧道",
+    "Shader-based deformation, inertial motion, deterministic looping and synced DOM overlays for a tactile WebGL tube (React Three Fiber).",
+    "着色器形变 + 惯性运动 + 确定性循环 + DOM 覆层同步，做出有质感的 WebGL 图片隧道（R3F）。",
+    "r3f,shader,scroll", "https://tympanus.net/codrops/2026/02/17/reactive-depth-building-a-scroll-driven-3d-image-tube-with-react-three-fiber/"],
+  ["cr-cinematic", "Cinematic 3D Scroll with GSAP", "GSAP 电影感 3D 滚动",
+    "How to build cinematic, story-like 3D scroll experiences driven entirely by GSAP timelines.",
+    "用 GSAP 时间线做出电影般、有叙事感的 3D 滚动体验。",
+    "gsap,3d,scroll", "https://tympanus.net/codrops/2025/11/19/how-to-build-cinematic-3d-scroll-experiences-with-gsap/"],
+  ["cr-sticky-grid", "Sticky Grid Scroll", "粘性网格滚动",
+    "A scroll-driven animated grid where every transition is designed for clear, fluid visual storytelling.",
+    "滚动驱动的动画网格，每一次过渡都为清晰流畅的视觉叙事而设计。",
+    "grid,scroll,gsap", "https://tympanus.net/codrops/2026/03/02/sticky-grid-scroll-building-a-scroll-driven-animated-grid/"],
+  ["cr-gooey", "Gooey Image Hover Effects", "黏稠图片悬停效果",
+    "Gooey reveal hover effects on images with Three.js — using shader noise to melt one image into another on hover.",
+    "用 Three.js 做黏稠揭示悬停：着色器噪声让一张图在悬停时「化」成另一张。",
+    "hover,three.js,gooey", "https://tympanus.net/codrops/2019/10/23/making-gooey-image-hover-effects-with-three-js/"],
+  ["cr-distortion", "WebGL Distortion Hover", "WebGL 扭曲悬停",
+    "A small library for WebGL-powered distortion hover effects, transitioning between images using displacement maps.",
+    "一个小库：用位移贴图做 WebGL 扭曲悬停，在两张图之间做位移转场。",
+    "hover,distortion,webgl", "https://tympanus.net/codrops/2018/04/10/webgl-distortion-hover-effects/"],
+  ["cr-bulge", "Bulge Distortion Effect", "凸起扭曲效果",
+    "A fun bulge/magnify distortion in WebGL using the OGL library and a custom fragment shader.",
+    "用 OGL 库 + 自定义片元着色器做的凸起/放大扭曲效果，趣味十足。",
+    "distortion,ogl,shader", "https://tympanus.net/codrops/2023/06/28/creating-a-bulge-distortion-effect-with-webgl/"],
+  ["cr-rgb-shift", "Grid Displacement + RGB Shift", "网格位移 + RGB 偏移",
+    "Pixel/grid displacement on a texture in Three.js using GPGPU shaders, with a subtle RGB shift on cursor move.",
+    "用 Three.js GPGPU 着色器对纹理做像素/网格位移，光标移动时带轻微 RGB 偏移。",
+    "shader,gpgpu,rgb", "https://tympanus.net/codrops/2024/08/27/grid-displacement-texture-with-rgb-shift-using-three-js-gpgpu-and-shaders/"],
+  ["cr-product-grid", "Animated Product Grid Preview", "动画产品网格预览",
+    "A 'grid to preview' hover interaction that transforms product cards into a full preview using GSAP and clip-path.",
+    "「网格 → 预览」悬停交互：用 GSAP + clip-path 把产品卡片展开成整屏预览。",
+    "grid,gsap,clip-path", "https://tympanus.net/codrops/2025/05/27/animated-product-grid-preview-with-gsap-clip-path/"],
+  ["cr-flip", "Grid Layout Transitions (GSAP Flip)", "网格布局过渡（GSAP Flip）",
+    "Interactive, button-triggered responsive grid layout transitions built with the GSAP Flip plugin and CSS Grid.",
+    "用 GSAP Flip 插件 + CSS Grid 做的、按钮触发的响应式网格布局过渡。",
+    "grid,gsap,flip", "https://tympanus.net/codrops/2026/01/20/animating-responsive-grid-layout-transitions-with-gsap-flip/"],
+  ["cr-parallax", "Infinite Parallax Grid", "无限视差网格",
+    "An infinite, draggable parallax grid with seamless tiling, built with GSAP.",
+    "用 GSAP 做的无限、可拖拽视差网格，无缝平铺。",
+    "grid,parallax,gsap", "https://tympanus.net/codrops/2025/06/11/building-an-infinite-parallax-grid-with-gsap-and-seamless-tiling/"],
+  ["cr-draggable", "Draggable Product Grid", "可拖拽产品网格",
+    "A recreation of Palmer's draggable product grid — inertial dragging and snapping with GSAP.",
+    "复刻 Palmer 的可拖拽产品网格：GSAP 惯性拖拽 + 吸附。",
+    "drag,grid,gsap", "https://tympanus.net/codrops/2025/09/01/recreating-palmers-draggable-product-grid-with-gsap/"],
+].map(([slug, titleEn, titleZh, summaryEn, summaryZh, tags, sourceUrl]) => ({
+  slug,
+  titleEn,
+  titleZh,
+  summaryEn,
+  summaryZh,
+  tags,
+  thumbnail: "", // real crawler fills the original thumbnail; empty shows a placeholder
+  liveUrl: sourceUrl,
+  source: "codrops",
+  sourceName: "Codrops",
+  sourceUrl,
+  license: CODROPS_LICENSE,
+  isPremium: false,
+  priceCents: 0,
+  promptEn: "",
+  promptZh: "",
+}));
+
 async function main() {
   const demo = await prisma.user.upsert({
     where: { email: "studio@motionhub.dev" },
@@ -124,7 +204,8 @@ async function main() {
     create: { email: "studio@motionhub.dev", name: "MotionHub Studio" },
   });
 
-  for (const d of demos) {
+  const all = [...demos, ...crawledCodrops];
+  for (const d of all) {
     await prisma.demo.upsert({
       where: { slug: d.slug },
       update: d,
@@ -134,7 +215,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${demos.length} demos.`);
+  console.log(`Seeded ${all.length} demos (${crawledCodrops.length} crawled from Codrops).`);
 }
 
 main()
